@@ -9,7 +9,6 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"db"
 )
 
 func getRoot(w http.ResponseWriter, r *http.Request) {
