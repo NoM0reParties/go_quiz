@@ -1,6 +1,7 @@
 package db
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -8,7 +9,10 @@ import (
 	"gorm.io/gorm"
 )
 
-func Init() *gorm.DB {
+var DBCLIENT *gorm.DB
+var err error
+
+func Init() {
 
 	pgUser, exists := os.LookupEnv("POSTGRES_USER")
 	if !exists {
@@ -31,22 +35,29 @@ func Init() *gorm.DB {
 		log.Fatal("No enviroment wasn't set")
 	}
 
-	dbURL := "postgres://" + pgUser + ":" + pgPass + "@" + pgHost + ":" + pgPort + "/" + pgDB
+	dbURL := " host=" + pgHost + " user=" + pgUser + " password=" + pgPass + " dbname=" + pgDB + " port=" + pgPort + " sslmode=disable TimeZone=UTC"
 
-	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
+	// dbURL := "postgres://" + pgUser + ":" + pgPass + "@" + pgHost + ":" + pgPort + "/" + pgDB
+
+	DBCLIENT, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	db.AutoMigrate(
+	fmt.Println("Successfully connected to DB")
+
+	DBCLIENT.AutoMigrate(
 		&User{},
 		&Quiz{},
 		&Theme{},
 		&Question{},
 		&InGameQuestion{},
 		&Game{},
+		&Participant{},
 	)
+}
 
-	return db
+func GetDB() *gorm.DB {
+	return DBCLIENT
 }

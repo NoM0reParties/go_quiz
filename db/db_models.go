@@ -25,13 +25,25 @@ type Question struct {
 
 type InGameQuestion struct {
 	ID         uint `gorm:"primaryKey"`
-	Question   Question
+	QuestionID uint
+	Question   Question `gorm:"foreignKey:QuestionID"`
 	IsAnswered bool
 }
 
+type Participant struct {
+	ID     uint `gorm:"primaryKey"`
+	UserID uint
+	User   User `gorm:"foreignKey:UserID"`
+	GameID uint
+	Game   Game `gorm:"foreignKey:GameID"`
+	Score  int32
+}
+
 type Game struct {
-	ID           uint `gorm:"primaryKey"`
-	Quiz         Quiz
-	Winner       User
-	Participants []User
+	ID       uint `gorm:"primaryKey"`
+	QuizID   uint
+	Quiz     Quiz `gorm:"foreignKey:QuizID"`
+	WinnerID uint
+	Winner   User `gorm:"foreignKey:WinnerID"`
+	Participants []Participant 
 }
