@@ -37,8 +37,6 @@ func Init() {
 
 	dbURL := " host=" + pgHost + " user=" + pgUser + " password=" + pgPass + " dbname=" + pgDB + " port=" + pgPort + " sslmode=disable TimeZone=UTC"
 
-	// dbURL := "postgres://" + pgUser + ":" + pgPass + "@" + pgHost + ":" + pgPort + "/" + pgDB
-
 	DBCLIENT, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 
 	if err != nil {
@@ -55,6 +53,7 @@ func Init() {
 		&InGameQuestion{},
 		&Game{},
 		&Participant{},
+		&Achivement{},
 	)
 }
 

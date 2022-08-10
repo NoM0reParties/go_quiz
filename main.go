@@ -38,7 +38,7 @@ func main() {
 func createRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 	// User endpoints
-	router.HandleFunc("/user/create", eh.GetUser).Methods("POST")
+	router.HandleFunc("/user/create", eh.CreateUser).Methods("POST")
 
 	return router
 }

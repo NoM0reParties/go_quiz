@@ -1,8 +1,17 @@
 package db
 
 type User struct {
-	ID   uint `gorm:"primaryKey"`
-	Name string
+	ID    uint `gorm:"primaryKey"`
+	Name  string
+	Photo string
+}
+
+type Achivement struct {
+	ID     uint `gorm:"primaryKey"`
+	Name   string
+	Level  string
+	UserID uint
+	User   User `gorm:"foreignKey:UserID"`
 }
 
 type Quiz struct {
@@ -40,10 +49,11 @@ type Participant struct {
 }
 
 type Game struct {
-	ID       uint `gorm:"primaryKey"`
-	QuizID   uint
-	Quiz     Quiz `gorm:"foreignKey:QuizID"`
-	WinnerID uint
-	Winner   User `gorm:"foreignKey:WinnerID"`
-	Participants []Participant 
+	ID           uint `gorm:"primaryKey"`
+	QuizID       uint
+	Quiz         Quiz `gorm:"foreignKey:QuizID"`
+	WinnerID     uint
+	Winner       User `gorm:"foreignKey:WinnerID"`
+	Participants []Participant
 }
+
