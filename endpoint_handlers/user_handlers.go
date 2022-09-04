@@ -1,21 +1,30 @@
 package eh
 
 import (
-	"encoding/json"
 	"net/http"
 	"quiz/db"
+
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
-
-func CreateUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Content-Type", "application/json")
-	
+func CreateUser(c *gin.Context) {
 	var newUser db.User
 
-	json.NewDecoder(r.Body).Decode(&newUser)
-
+	if err := c.BindJSON(&newUser); err != nil {
+		return
+	}
+	newUser.Token = uuid.New()
 	db.GetDB().Create(&newUser)
 
-	json.NewEncoder(w).Encode(newUser)
+	c.IndentedJSON(http.StatusCreated, newUser)
+}
+
+func GetUser(c *gin.Context) {
+	var newUser db.User
+
+	db.GetDB().Find(&newUser, c.Param("id"))
+
+	c.IndentedJSON(http.StatusCreated, newUser)
 }
 

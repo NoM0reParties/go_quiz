@@ -1,9 +1,12 @@
 package db
 
+import "github.com/google/uuid"
+
 type User struct {
 	ID    uint `gorm:"primaryKey"`
 	Name  string
 	Photo string
+	Token uuid.UUID
 }
 
 type Achivement struct {
@@ -15,14 +18,21 @@ type Achivement struct {
 }
 
 type Quiz struct {
-	ID        uint `gorm:"primaryKey"`
-	Name      string
-	Completed bool
+	ID            uint `gorm:"primaryKey"`
+	Name          string
+	Completed     bool
+	QuestionCount int
+	ThemeCount    int
+	SuperRound    bool
+	UserID        uint
+	User          User `gorm:"foreignKey:UserID"`
 }
 
 type Theme struct {
-	ID   uint
-	Name string
+	ID     uint `gorm:"primaryKey"`
+	Name   string
+	QuizID uint
+	Quiz   Quiz `gorm:"foreignKey:QuizID"`
 }
 
 type Question struct {
@@ -55,5 +65,5 @@ type Game struct {
 	WinnerID     uint
 	Winner       User `gorm:"foreignKey:WinnerID"`
 	Participants []Participant
+	QueueAnswer  bool
 }
-
