@@ -7,6 +7,7 @@ import (
 )
 
 func PublicRoutes(g *gin.RouterGroup) {
-	g.POST("/user/create", eh.CreateUser)
+	g.POST("/user/register", eh.CreateUser)
+	g.POST("/user/login", eh.Login)
 	g.GET("/user/:id", eh.GetUser)
 }

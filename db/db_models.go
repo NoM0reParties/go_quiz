@@ -3,10 +3,11 @@ package db
 import "github.com/google/uuid"
 
 type User struct {
-	ID    uint `gorm:"primaryKey"`
-	Name  string
-	Photo string
-	Token uuid.UUID
+	ID       uint `gorm:"primaryKey"`
+	Name     string
+	Photo    string
+	Token    uuid.UUID
+	Password string
 }
 
 type Achivement struct {
@@ -40,6 +41,9 @@ type Question struct {
 	TextContent       string
 	Value             int32
 	MultimediaContent string
+	MultimediaType    string
+	ThemeID           uint
+	Theme             Theme `gorm:"foreignKey:ThemeID"`
 }
 
 type InGameQuestion struct {

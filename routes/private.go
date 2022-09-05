@@ -19,4 +19,13 @@ func PrivateRoutes(g *gin.RouterGroup) {
 	g.POST("/theme/create", eh.CreateTheme)
 	g.PUT("/theme/:id/update", eh.EditTheme)
 	g.DELETE("/theme/:id/delete", eh.DeleteTheme)
+	// Question Handlers
+	g.GET("/question/list", eh.GetQuestionList)
+	g.GET("/question/:id", eh.GetQuestion)
+	g.POST("/question/create", eh.CreateQuestion)
+	g.PUT("/question/:id/update", eh.EditQuestion)
+	g.DELETE("/question/:id/delete", eh.DeleteQuestion)
+
+	// MISC
+	g.POST("/save-file", eh.SaveFileHandler)
 }
