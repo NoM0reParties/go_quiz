@@ -26,7 +26,7 @@ func main() {
 
 	router := createRouter()
 
-	router.Run("localhost:3333")
+	router.Run("quizbackend:3333")
 }
 
 func createRouter() *gin.Engine {

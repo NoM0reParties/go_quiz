@@ -36,3 +36,9 @@ type LoginDTO struct {
 	Name     string
 	Password string
 }
+
+type RegisterDTO struct {
+	Name     string                `form:"name" binding:"required"`
+	Password string                `form:"password"`
+	File *multipart.FileHeader `form:"file"`
+}

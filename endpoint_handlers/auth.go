@@ -2,23 +2,49 @@ package eh
 
 import (
 	"fmt"
+	"path/filepath"
 	"quiz/db"
 	"quiz/dto"
 	"quiz/helpers"
+	"runtime"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
-func CreateUser(c *gin.Context) {
-	var newUser db.User
+var (
+    _, b, _, _ = runtime.Caller(0)
+    basepath   = filepath.Dir(b)
+)
 
-	if err := c.BindJSON(&newUser); err != nil {
-		c.AbortWithError(400, gin.Error{})
+func CreateUser(c *gin.Context) {
+	var regDTO dto.RegisterDTO
+
+	if err := c.ShouldBind(&regDTO); err != nil {
+		c.AbortWithError(400, err)
 	}
 
-	newUser.Password = helpers.HashAndSalt([]byte(newUser.Password))
+	fmt.Println(basepath)
+	newUser := db.User{
+		Name:  regDTO.Name,
+	}
+
+	if regDTO.File != nil {
+		extension := filepath.Ext(regDTO.File.Filename)
+		fmt.Println(extension)
+		file := regDTO.File
+		dst := "/media/" + uuid.New().String() + extension
+
+		if err := c.SaveUploadedFile(file, dst); err != nil {
+			c.AbortWithError(400, err)
+		}
+
+		fmt.Println(extension)
+		newUser.Photo = dst
+	}
+
+	newUser.Password = helpers.HashAndSalt([]byte(regDTO.Password))
 
 	newUser.Token = uuid.New()
 	db.GetDB().Create(&newUser)
@@ -35,7 +61,6 @@ func Login(c *gin.Context) {
 	}
 
 	db.GetDB().Where(&db.User{Name: userData.Name}).First(&user)
-	fmt.Println(userData.Name)
 
 	encryptionErr := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(userData.Password))
 
