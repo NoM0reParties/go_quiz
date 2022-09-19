@@ -11,13 +11,14 @@ func PrivateRoutes(g *gin.RouterGroup) {
 	g.GET("/quiz/list", eh.GetQuizList)
 	g.GET("/quiz/:id", eh.GetQuiz)
 	g.POST("/quiz/create", eh.CreateQuiz)
-	g.PUT("/quiz/:id/update", eh.EditQuiz)
+	g.PATCH("/quiz/:id/update", eh.EditQuiz)
 	g.DELETE("/quiz/:id/delete", eh.DeleteQuiz)
+	g.GET("/quiz/:id/theme-info", eh.ThemeInfo)
 	// Theme Handlers
 	g.GET("/theme/list", eh.GetThemeList)
 	g.GET("/theme/:id", eh.GetTheme)
 	g.POST("/theme/create", eh.CreateTheme)
-	g.PUT("/theme/:id/update", eh.EditTheme)
+	g.PATCH("/theme/:id/update", eh.EditTheme)
 	g.DELETE("/theme/:id/delete", eh.DeleteTheme)
 	// Question Handlers
 	g.GET("/question/list", eh.GetQuestionList)

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -37,10 +38,18 @@ func Init() {
 
 	dbURL := " host=" + pgHost + " user=" + pgUser + " password=" + pgPass + " dbname=" + pgDB + " port=" + pgPort + " sslmode=disable TimeZone=UTC"
 
-	DBCLIENT, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
-
-	if err != nil {
-		log.Fatalln(err)
+	for i := 1; i <= 10; i++ {
+		DBCLIENT, err = gorm.Open(postgres.New(postgres.Config{
+			DSN: dbURL,
+			PreferSimpleProtocol: true,
+		}), &gorm.Config{})
+		if err == nil {
+			i = 10
+		} else {
+			fmt.Println(dbURL)
+			time.Sleep(3 * time.Second)
+			fmt.Println(err)
+		}
 	}
 
 	fmt.Println("Successfully connected to DB")

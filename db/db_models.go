@@ -32,6 +32,7 @@ type Quiz struct {
 type Theme struct {
 	ID     uint `gorm:"primaryKey"`
 	Name   string
+	Round  int32
 	QuizID uint
 	Quiz   Quiz `gorm:"foreignKey:QuizID"`
 }

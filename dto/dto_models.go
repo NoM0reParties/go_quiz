@@ -20,8 +20,9 @@ type QuizResponseDTO struct {
 }
 
 type ThemeResponseDTO struct {
-	ID   uint
-	Name string
+	ID    uint
+	Name  string
+	Round int
 }
 
 type QuestionResponseDTO struct {
@@ -40,5 +41,10 @@ type LoginDTO struct {
 type RegisterDTO struct {
 	Name     string                `form:"name" binding:"required"`
 	Password string                `form:"password"`
-	File *multipart.FileHeader `form:"file"`
+	File     *multipart.FileHeader `form:"file"`
+}
+
+type ThemeInfoDTO struct {
+	ThemesAvailable []int32
+	ThemeCount      int32
 }

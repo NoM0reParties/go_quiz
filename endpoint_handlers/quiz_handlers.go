@@ -93,3 +93,36 @@ func DeleteQuiz(c *gin.Context) {
 
 	c.Writer.WriteHeader(204)
 }
+
+func ThemeInfo(c *gin.Context) {
+	var themes []db.Theme
+	var quiz db.Quiz
+	var first, second, third int32
+	var response []int32
+
+	db.GetDB().Find(&quiz, c.Param(("id")))
+	db.GetDB().Model(db.Theme{}).Where("quiz_id", c.Param("id")).Find(&themes)
+
+	for _, theme := range themes {
+		if (theme.Round == 1) {
+			first += 1
+		} else if (theme.Round == 2) {
+			second += 1
+		} else if (theme.Round == 3) {
+			third += 1
+		}
+	}
+
+	first = int32(quiz.ThemeCount) - first
+	second = int32(quiz.ThemeCount) - second
+	third = int32(quiz.ThemeCount) - third
+
+	if first > 0 { response = append(response, 1) }
+	if second > 0 { response = append(response, 2) }
+	if third > 0 { response = append(response, 3) }
+
+	c.IndentedJSON(http.StatusOK, dto.ThemeInfoDTO{
+		ThemesAvailable: response,
+		ThemeCount: int32(quiz.ThemeCount),
+	})
+}

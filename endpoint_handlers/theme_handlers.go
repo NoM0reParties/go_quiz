@@ -81,3 +81,6 @@ func DeleteTheme(c *gin.Context) {
 
 	c.Writer.WriteHeader(204)
 }
+
+
+
